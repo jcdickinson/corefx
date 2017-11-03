@@ -310,9 +310,9 @@ namespace System
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add<T>(T value, IEqualityComparer<T> comparer)
         {
-            if (comparer == null)
-                comparer ?? EqualityComparer<T>.Default;
-            Add(cmp.GetHashCode(value));
+            if (comparer is null)
+                comparer = EqualityComparer<T>.Default;
+            Add(comparer.GetHashCode(value));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
