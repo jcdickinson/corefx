@@ -257,10 +257,11 @@ namespace System
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void Initialize(out uint v1, out uint v2, out uint v3, out uint v4)
         {
-            v1 = s_seed + Prime1 + Prime2;
-            v2 = s_seed + Prime2;
-            v3 = s_seed + 0;
-            v4 = s_seed - Prime1;
+            var seed = s_seed;
+            v1 = seed + Prime1 + Prime2;
+            v2 = seed + Prime2;
+            v3 = seed + 0;
+            v4 = seed - Prime1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
