@@ -420,7 +420,8 @@ namespace System
 
         [Obsolete("Use ToHashCode to retrieve the computed hash code.", error: true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override int GetHashCode() => throw new NotImplementedException();
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public override int GetHashCode() => throw new NotSupportedException();
 #       pragma warning restore 0809
 
     }
