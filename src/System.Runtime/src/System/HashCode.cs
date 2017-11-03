@@ -76,9 +76,9 @@ namespace System
             uint hash = MixEmptyState();
             hash += 4;
 
-            hash = QueueRound(hash, hc1);
+            QueueRound(ref hash, hc1);
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -91,10 +91,10 @@ namespace System
             uint hash = MixEmptyState();
             hash += 8;
 
-            hash = QueueRound(hash, hc1);
-            hash = QueueRound(hash, hc2);
+            QueueRound(ref hash, hc1);
+            QueueRound(ref hash, hc2);
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -108,11 +108,11 @@ namespace System
             uint hash = MixEmptyState();
             hash += 12;
 
-            hash = QueueRound(hash, hc1);
-            hash = QueueRound(hash, hc2);
-            hash = QueueRound(hash, hc3);
+            QueueRound(ref hash, hc1);
+            QueueRound(ref hash, hc2);
+            QueueRound(ref hash, hc3);
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -126,15 +126,15 @@ namespace System
 
             Initialize(out uint v1, out uint v2, out uint v3, out uint v4);
 
-            v1 = Round(v1, hc1);
-            v2 = Round(v2, hc2);
-            v3 = Round(v3, hc3);
-            v4 = Round(v4, hc4);
+            Round(ref v1, hc1);
+            Round(ref v2, hc2);
+            Round(ref v3, hc3);
+            Round(ref v4, hc4);
 
             uint hash = MixState(v1, v2, v3, v4);
             hash += 16;
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -149,17 +149,17 @@ namespace System
 
             Initialize(out uint v1, out uint v2, out uint v3, out uint v4);
 
-            v1 = Round(v1, hc1);
-            v2 = Round(v2, hc2);
-            v3 = Round(v3, hc3);
-            v4 = Round(v4, hc4);
+            Round(ref v1, hc1);
+            Round(ref v2, hc2);
+            Round(ref v3, hc3);
+            Round(ref v4, hc4);
 
             uint hash = MixState(v1, v2, v3, v4);
             hash += 20;
 
-            hash = QueueRound(hash, hc5);
+            QueueRound(ref hash, hc5);
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -175,18 +175,18 @@ namespace System
 
             Initialize(out uint v1, out uint v2, out uint v3, out uint v4);
 
-            v1 = Round(v1, hc1);
-            v2 = Round(v2, hc2);
-            v3 = Round(v3, hc3);
-            v4 = Round(v4, hc4);
+            Round(ref v1, hc1);
+            Round(ref v2, hc2);
+            Round(ref v3, hc3);
+            Round(ref v4, hc4);
 
             uint hash = MixState(v1, v2, v3, v4);
             hash += 24;
 
-            hash = QueueRound(hash, hc5);
-            hash = QueueRound(hash, hc6);
+            QueueRound(ref hash, hc5);
+            QueueRound(ref hash, hc6);
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -203,19 +203,19 @@ namespace System
 
             Initialize(out uint v1, out uint v2, out uint v3, out uint v4);
 
-            v1 = Round(v1, hc1);
-            v2 = Round(v2, hc2);
-            v3 = Round(v3, hc3);
-            v4 = Round(v4, hc4);
+            Round(ref v1, hc1);
+            Round(ref v2, hc2);
+            Round(ref v3, hc3);
+            Round(ref v4, hc4);
 
             uint hash = MixState(v1, v2, v3, v4);
             hash += 28;
 
-            hash = QueueRound(hash, hc5);
-            hash = QueueRound(hash, hc6);
-            hash = QueueRound(hash, hc7);
+            QueueRound(ref hash, hc5);
+            QueueRound(ref hash, hc6);
+            QueueRound(ref hash, hc7);
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -233,20 +233,20 @@ namespace System
 
             Initialize(out uint v1, out uint v2, out uint v3, out uint v4);
 
-            v1 = Round(v1, hc1);
-            v2 = Round(v2, hc2);
-            v3 = Round(v3, hc3);
-            v4 = Round(v4, hc4);
+            Round(ref v1, hc1);
+            Round(ref v2, hc2);
+            Round(ref v3, hc3);
+            Round(ref v4, hc4);
 
-            v1 = Round(v1, hc5);
-            v2 = Round(v2, hc6);
-            v3 = Round(v3, hc7);
-            v4 = Round(v4, hc8);
+            Round(ref v1, hc5);
+            Round(ref v2, hc6);
+            Round(ref v3, hc7);
+            Round(ref v4, hc8);
 
             uint hash = MixState(v1, v2, v3, v4);
             hash += 32;
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
             return (int)hash;
         }
 
@@ -265,19 +265,18 @@ namespace System
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static uint Round(uint hash, uint input)
+        private static void Round(ref uint hash, uint input)
         {
             hash += input * Prime2;
             hash = Rol(hash, 13);
             hash *= Prime1;
-            return hash;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static uint QueueRound(uint hash, uint queuedValue)
+        private static void QueueRound(ref uint hash, uint queuedValue)
         {
             hash += queuedValue * Prime3;
-            return Rol(hash, 17) * Prime4;
+            hash = Rol(hash, 17) * Prime4;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -286,21 +285,19 @@ namespace System
             return Rol(v1, 1) + Rol(v2, 7) + Rol(v3, 12) + Rol(v4, 18);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint MixEmptyState()
         {
             return s_seed + Prime5;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static uint MixFinal(uint hash)
+        private static void MixFinal(ref uint hash)
         {
             hash ^= hash >> 15;
             hash *= Prime2;
             hash ^= hash >> 13;
             hash *= Prime3;
             hash ^= hash >> 16;
-            return hash;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -350,29 +347,22 @@ namespace System
 
             // To see what's really going on here, have a look at the Combine methods.
 
-            switch (position)
+            if (position == 0)
+                _queue1 = val;
+            else if (position == 1)
+                _queue2 = val;
+            else if (position == 2)
+                _queue3 = val;
+            else
             {
-                case 0:
-                    _queue1 = val;
-                    break;
-                case 1:
-                    _queue2 = val;
-                    break;
-                case 2:
-                    _queue3 = val;
-                    break;
-                default:
+                // length smaller than 4?
+                if ((_length ^ position) == 0)
+                    Initialize(out _v1, out _v2, out _v3, out _v4);
 
-                    // length smaller than 4?
-                    if ((_length ^ position) == 0)
-                        Initialize(out _v1, out _v2, out _v3, out _v4);
-
-                    _v1 = Round(_v1, _queue1);
-                    _v2 = Round(_v2, _queue2);
-                    _v3 = Round(_v3, _queue3);
-                    _v4 = Round(_v4, val);
-
-                    break;
+                Round(ref _v1, _queue1);
+                Round(ref _v2, _queue2);
+                Round(ref _v3, _queue3);
+                Round(ref _v4, val);
             }
 
             // Throw for more than uint.MaxValue fields.
@@ -398,25 +388,18 @@ namespace System
 
             // Mix what remains in the queue
 
-            switch (position)
+            if (position > 0)
             {
-                case 1:
-                    hash = QueueRound(hash, _queue1);
-                    break;
-
-                case 2:
-                    hash = QueueRound(hash, _queue1);
-                    hash = QueueRound(hash, _queue2);
-                    break;
-
-                case 3:
-                    hash = QueueRound(hash, _queue1);
-                    hash = QueueRound(hash, _queue2);
-                    hash = QueueRound(hash, _queue3);
-                    break;
+                QueueRound(ref hash, _queue1);
+                if (position > 1)
+                {
+                    QueueRound(ref hash, _queue2);
+                    if (position > 2)
+                        QueueRound(ref hash, _queue3);
+                }
             }
 
-            hash = MixFinal(hash);
+            MixFinal(ref hash);
 
             return (int)hash;
         }
